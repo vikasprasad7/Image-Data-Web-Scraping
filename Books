@@ -31,4 +31,6 @@ while current_page <= last_page:
         with open(f'img{pg}.png', 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         
-WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(@class, 'pagination--next')]/a"))).click()
+    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(@class, 'pagination--next')]/a"))).click()
+
+driver.quit()
