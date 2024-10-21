@@ -1,0 +1,34 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
+import pandas as pd
+import requests
+import urllib.request
+import os
+import shutil
+import time
+
+web = "https://giri.in/collections/books?grid_list=list-view"
+path = "C:/Users/vikas/Downloads/chromedriver-win64 (2)/chromedriver-win64/chromedriver"
+driver = webdriver.Chrome(path)
+driver.get(web)
+current_page = 1
+while current_page <= last_page:
+    pagination = driver.find_element("xpath", '//ul[contains(@class, "pagination")]')
+    pages = pagination.find_elements("xpath", './li')
+    last_page = int(pages[-2].text)
+    time.sleep(3)
+    for pg in pages:
+        desc = pg.find_elements("xpath", "//div[contains(@class, 'productitem')]/p/a")[pg]
+        
+        img = driver.find_elements("xpath", "//img[contains(@class, 'productitem--image-primary')]")[i]
+        dwimg = img.get_attribute("src")
+        url = dwimg
+        response = requests.get(url, stream=True)
+        with open(f'img{pg}.png', 'wb') as out_file:
+            shutil.copyfileobj(response.raw, out_file)
+        
+WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(@class, 'pagination--next')]/a"))).click()
