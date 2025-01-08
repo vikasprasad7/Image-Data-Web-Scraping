@@ -15,11 +15,13 @@ web = "https://giri.in/collections/books?grid_list=list-view"
 path = "C:/Users/vikas/Downloads/chromedriver-win64 (2)/chromedriver-win64/chromedriver"
 driver = webdriver.Chrome(path)
 driver.get(web)
+
+pagination = driver.find_element("xpath", '//ul[contains(@class, "pagination")]')
+pages = pagination.find_elements("xpath", './li')
+last_page = int(pages[-2].text)
+
 current_page = 1
 while current_page <= last_page:
-    pagination = driver.find_element("xpath", '//ul[contains(@class, "pagination")]')
-    pages = pagination.find_elements("xpath", './li')
-    last_page = int(pages[-2].text)
     time.sleep(3)
     for pg in pages:
         desc = pg.find_elements("xpath", "//div[contains(@class, 'productitem')]/p/a")[pg]
